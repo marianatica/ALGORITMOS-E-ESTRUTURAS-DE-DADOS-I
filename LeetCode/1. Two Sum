@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+
+    int *vetorResultado = malloc(sizeof(int) * 2);
+    *returnSize = 2;
+
+    for (int i = 0; i < numsSize-1; i++) {
+        for (int j = i+1; j < numsSize; j++) {
+            if (nums[j] + nums[i] == target) {
+                vetorResultado[0] = j;
+                vetorResultado[1] = i;
+                return vetorResultado;
+            }
+        }
+    }
+    return vetorResultado;
+}
+
+int main(){
+
+    int tamanho, soma, returnsize;
+    printf("Digite o tamanho do seu vetor: ");
+    scanf("%d", &tamanho);
+
+    int num[tamanho];
+
+    for(int i = 0; i < tamanho; i++){
+        printf("Digite o %d numero: ", i+1);
+        scanf("%d", &num[i]);
+    }
+
+    printf("Digite a soma: ");
+    scanf("%d", &soma);
+
+
+    int *resultado = twoSum (num, tamanho, soma, &returnsize);
+
+    if  (resultado != 0 && num[resultado[0]] + num[resultado[1]] == soma){
+        printf("Indices encontrados: [%d, %d]", resultado[0], resultado[1]);
+        free(resultado);
+    } else {
+        printf("Erro!");
+    }
+
+    return 0;
+}
