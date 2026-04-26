@@ -1,0 +1,57 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** generateMatrix(int n, int* returnSize, int** returnColumnSizes) {
+/*entendimento do codigo: o codigo quer percorrer a matriz em espiral, como fazer isso:
+    1. ele percorre da esquerda para direita
+    2. ele percorre de cima ate o ultimo elemento da coluna embaixo
+    3. ele volta o vetor ate o primeiro elemento da linha da direita para esquerda
+    4. depois ele sobe ate o ultimo elemento nao visto (cima), 
+    5. fazer isso virar um loop --> usei while
+    */
+
+    int** matriz = (int**) malloc(n * sizeof(int*));;
+    *returnColumnSizes = (int*) malloc(n * sizeof(int));
+
+    for(int i = 0; i < n; i++){
+        matriz[i] = (int*) malloc(n * sizeof(int));
+        (*returnColumnSizes)[i] = n;
+    }
+
+    int emcima = 0;
+    int direita = n-1;
+    int embaixo = n-1;
+    int esquerda = 0;
+    int num = 1; 
+
+    while(emcima <= embaixo && esquerda <= direita) { // 1.
+        for(int i = esquerda; i <= direita; i++){
+            matriz[emcima][i]=num++;
+        }
+        emcima++; 
+
+        for (int i = emcima; i <= embaixo; i++){ //2.
+            matriz[i][direita]=num++;
+        }
+        direita--; 
+
+        if(emcima <= embaixo){ //3.
+            for(int i = direita; i >= esquerda; i--){
+                matriz[embaixo][i]=num++;
+            } 
+            embaixo--; 
+        }
+
+        if(esquerda <= direita){ //4
+            for(int i = embaixo; i >= emcima; i--){ 
+                matriz[i][esquerda]=num++;
+            }
+            esquerda++; 
+        } 
+    }
+
+    *returnSize = n;
+    return matriz;
+}
